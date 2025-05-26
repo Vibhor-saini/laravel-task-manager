@@ -8,7 +8,15 @@
 
     <form method="POST" action="/tasks">
         @csrf
-        <input type="text" name="title" required>
+        <input type="text" name="title" placeholder="Task title" required>
+
+        <select name="category_id" required>
+            <option value="">-- Select Category --</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+
         <button>Add</button>
     </form>
 
@@ -18,7 +26,7 @@
                 <form method="POST" action="/tasks/{{ $task->id }}">
                     @csrf @method('PATCH')
                     <input type="checkbox" onchange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
-                    {{ $task->title }}
+                    {{ $task->title }} — <strong>{{ $task->category->name ?? 'No Category' }}</strong>
                 </form>
 
                 <form method="POST" action="/tasks/{{ $task->id }}">
